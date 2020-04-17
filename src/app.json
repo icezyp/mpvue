@@ -1,11 +1,12 @@
 {
   "pages": [
-    "pages/index/main"
+    "pages/index/main",
+    "pages/search/main"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "mpvue",
     "navigationBarTextStyle": "black"
   },
   "usingComponents": {
