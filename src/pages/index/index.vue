@@ -141,7 +141,7 @@ export default {
             this.$router.push({
                 path: '/pages/search/main',
                 query: {
-                    hotSearch: (this.hotSearch && this.hotSearch.keyword) || ''
+                    hotSearch: this.hotSearch || ''
                 }
             })
         },
