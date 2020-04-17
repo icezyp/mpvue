@@ -46,3 +46,18 @@ export function register(openId, userInfo) {
     })
 }
 
+//关键词搜索
+export function search(params) {
+    if(params.keyword) {
+        params.keyword = encodeURIComponent(params.keyword)
+    }
+    params.pageSize = params.pageSize || 20
+    params.page = params.page || 1
+    return get(`${API_URL}/book/search`, params)
+}
+
+//热门搜索
+export function hotSearch() {
+    return get(`${API_URL}/book/hot-search`)
+}
+

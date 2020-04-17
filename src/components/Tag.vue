@@ -18,3 +18,18 @@ export default {
     }
 }
 </script>
+<style lang="scss" scoped>
+@import '@/style/mixin.scss';
+.tag-wrapper {
+    padding: 6px 17px;
+    margin: 0 6px 12px;
+    border-radius: 16px;
+    background-color: #F7F7F9;
+    .tag {
+        font-size: 14px;
+        color: #272E37;
+        width: 100%;
+        @include ellipsis
+    }
+}
+</style>

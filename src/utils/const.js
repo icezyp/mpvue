@@ -31,3 +31,8 @@ export const CATEGORY = {
 
   export const APP_ID = 'wxe93898af15005941'
   export const APP_SECRET = 'bfd4aa833625de49283232e340f48c7a'
+
+  //存storage的key
+  export const OPEN_ID_KEY = 'openId'
+  export const USER_INFO = 'userInfo'
+  export const HISTORY_SEARCH_KEY = 'historySearch'

@@ -73,11 +73,12 @@
     </div>
 </template>
 <script>
-import SearchBar from '@/components/home/SearchBar'
-import HomeCard from '@/components/home/HomeCard'
-import HomeBanner from '@/components/home/HomeBanner'
-import HomeBook from '@/components/home/HomeBook'
-import Auth from '@/components/base/Auth'
+import SearchBar from '@/components/SearchBar'
+import HomeCard from '@/components/HomeCard'
+import HomeBanner from '@/components/HomeBanner'
+import HomeBook from '@/components/HomeBook'
+import Auth from '@/components/auth/Auth'
+import {USER_INFO, OPEN_ID_KEY} from '@/utils/const'
 import {getHomeData, recommend, freeRead, hotBook, category, register} from '@/api/index'
 import {getSetting, getUserInfo, setStorageSync, getStorageSync, getUserOpenId, showLoading, hideLoading} from '@/api/wechat'
 export default {
@@ -137,7 +138,12 @@ export default {
             })
         },
         onSearchBarClick() {
-            this.$router.push('/pages/search/main')
+            this.$router.push({
+                path: '/pages/search/main',
+                query: {
+                    hotSearch: (this.hotSearch && this.hotSearch.keyword) || ''
+                }
+            })
         },
         onBannerClick() {
             console.log('banner click...')
@@ -183,8 +189,8 @@ export default {
             }
             getUserInfo(
                 (userInfo) => {
-                    setStorageSync('userInfo',  userInfo)
-                    const openId = getStorageSync('openId')
+                    setStorageSync(USER_INFO,  userInfo)
+                    const openId = getStorageSync(OPEN_ID_KEY)
                     if(!openId) {
                         getUserOpenId(openId => getHomeDataAfterGetOpenId(openId, userInfo))
                     } else {

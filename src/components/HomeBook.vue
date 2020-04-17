@@ -255,10 +255,11 @@ export default {
 }
 </style>
 <style lang="scss">
+@import '@/style/variables.scss';
 .home-book-footer {
     .home-book-btn {
         width: 100%;
-        color: #3696ef;
+        color: $blueTextBtn;
         font-size: 14px;
         border: 1px solid #efefef;
     }

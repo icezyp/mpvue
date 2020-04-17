@@ -1,4 +1,5 @@
 import {getOpenId} from './index'
+import {OPEN_ID_KEY} from '@/utils/const'
 //获取授权
 export function getSetting(auth, onSuccess, onFailed) {
     mpvue.getSetting({
@@ -51,7 +52,7 @@ export function getUserOpenId(callback) {
                 getOpenId(code).then(res => {
                     const {data : {data: {openid}}} = res
                     //将openId存入storage中
-                    setStorageSync('openId', openid)
+                    setStorageSync(OPEN_ID_KEY, openid)
                     //成功的回调
                     callback && callback(openid)
                 }).catch(err => {
