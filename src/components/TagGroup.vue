@@ -70,6 +70,8 @@ export default {
     .tags {
         display: flex;
         flex-wrap: wrap;
+        max-height: 120px;
+        overflow: hidden;
         .tag-outter {
             max-width: 100%;
         }

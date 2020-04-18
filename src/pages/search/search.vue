@@ -6,17 +6,21 @@
             @onChange="onChange"
             @onClear="clearKeyword"
             :hot-search="hotSearchKeyword"
+            :focus="searchFocus"
+            ref="searchBar"
         />
         <TagGroup 
             :tag-array="hotSearchArray"
             header-title="热门搜索"
             btn-text="换一批"
+            @onGroupBtnClick="changeHotSearch"
             v-if="hotSearchArray && hotSearchArray.length > 0 && !showList"
         />
         <TagGroup 
             :tag-array="historySearch"
             header-title="搜索历史"
             btn-text="清空"
+            @onGroupBtnClick="clearHistory"
             v-if="historySearch && historySearch.length > 0 && !showList"
         />
         <SearchList
@@ -55,7 +59,9 @@ export default {
             this.searchList = {}
         },
         getHotSearch() {
-
+            hotSearch().then(res => {
+                this.hotSearch = res.data.data
+            })
         },
         //点击聚焦
         onSearchBarClick() {
@@ -66,8 +72,22 @@ export default {
         //点击软键盘的确认
         onConfirm(keyword) {
             if(!keyword || keyword.trim().length === 0) {
-
+                //从首页会传入一个搜索热词，当点击软键盘的完成按钮进行搜索时，若输入框的内容为空，则使用热词为关键词进行搜索
+                if(this.hotSearchKeyword && this.hotSearchKeyword.length > 0) {
+                    //设置输入框的内容
+                    this.$refs.searchBar.setValue(this.hotSearchKeyword)
+                    keyword = this.hotSearchKeyword
+                } else {
+                    return
+                }
             }
+            //存入历史，需要去重
+            if(!this.historySearch.includes(keyword)) {
+                this.historySearch.push(keyword)
+                setStorageSync(HISTORY_SEARCH_KEY, this.historySearch)
+            }
+            this.searchFocus = false
+            this.onSearch(keyword, true)
         },
         //输入内容变化
         onChange(keyword) {
@@ -87,17 +107,27 @@ export default {
                 this.searchList = res.data.data
             })
         },
+        //热门搜索点击换一批
+        changeHotSearch() {
+            this.getHotSearch()
+        },
+        //清空历史
+        clearHistory() {
+            this.historySearch = []
+            setStorageSync(HISTORY_SEARCH_KEY, this.historySearch)
+        },
+        //初始化
         init() {
             this.hotSearchKeyword = this.$route.query.hotSearch
-            this.historySearch = getStorageSync(HISTORY_SEARCH_KEY) || ''
+            this.historySearch = getStorageSync(HISTORY_SEARCH_KEY) || []
             this.openId = getStorageSync(OPEN_ID_KEY) || ''
             this.page = 1
-            this.searchList = null
-            this.searchFocus = true
+            this.searchList = {}
             this.getHotSearch()
-            hotSearch().then(res => {
-                console.log(res.data.data)
-            })
+            //清空输入框内容
+            this.$refs.searchBar.setValue('')
+            //聚焦
+            this.searchFocus = true
         }
     },
     mounted() {
@@ -111,6 +141,7 @@ export default {
         hotSearchArray() {
             const _hotSearch = []
             this.hotSearch.forEach(obj => _hotSearch.push(obj.title))
+            return _hotSearch
         }
     }
 }
