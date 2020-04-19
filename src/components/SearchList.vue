@@ -1,24 +1,24 @@
 <template>
     <div class="search-list">
         <SearchItem 
-            :icon="category.icon"
-            :title="category.title"
-            :sub-title="category.subTitle"
-            @click="showList(category.title, 'category')"
+            icon="apps-o"
+            :title="category"
+            sub-title="类别"
+            @click="showList(category, 'category')"
             v-if="category"
         />
         <SearchItem 
-            :icon="author.icon"
-            :title="author.title"
-            :sub-title="author.subTitle"
-            @click="showList(author.title, 'author')"
+            icon="user-o"
+            :title="author"
+            sub-title="作者"
+            @click="showList(author, 'author')"
             v-if="author"
         />
         <SearchItem 
-            :icon="publisher.icon"
-            :title="publisher.title"
-            :sub-title="publisher.subTitle"
-            @click="showList(publisher.title, 'publisher')"
+            icon="newspaper-o"
+            :title="publisher"
+            sub-title="出版社"
+            @click="showList(publisher, 'publisher')"
             v-if="publisher"
         />
         <BookList 
@@ -31,6 +31,7 @@
 <script>
 import SearchItem from './SearchItem'
 import BookList from './BookList'
+import {CATEGORY} from '@/utils/const'
 export default {
     components: {
         SearchItem,
@@ -52,13 +53,14 @@ export default {
     },
     computed: {
         category() {
-            return this.data && this.data.item && this.data.item[0]
+            let categoryText = this.data && this.data.category && this.data.category[0] && this.data.category[0].categoryText
+            return categoryText && CATEGORY[categoryText.toLowerCase()] || ''
         },
         author() {
-            return this.data && this.data.item && this.data.item[1]
+            return this.data && this.data.author && this.data.author[0] && this.data.author[0].author
         },
         publisher() {
-            return this.data && this.data.item && this.data.item[2]
+            return this.data && this.data.publisher && this.data.publisher[0] && this.data.publisher[0].publisher
         }
     }
 }

@@ -5,6 +5,7 @@
                 :name="iconName"
                 color="#999"
                 size="20px"
+                custom-class="search-item-icon"
             />
         </div>
         <div class="info">
@@ -35,7 +36,7 @@ export default {
         },
         icon: {
             type: String,
-            default:'fire'
+            default:''
         }
     },
     computed: {
@@ -63,6 +64,8 @@ export default {
         flex-shrink: 0;
         background-color: #f7f7f9;
         border-radius: 50%;
+        padding: 5px 0;
+        box-sizing: border-box;
         @include center;
     }
     .info {
@@ -80,5 +83,10 @@ export default {
             @include ellipsis;
         }
     }
+}
+</style>
+<style lang="scss">
+.search-item-icon {
+    margin: 5px 0;
 }
 </style>

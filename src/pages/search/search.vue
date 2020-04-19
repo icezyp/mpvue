@@ -14,6 +14,7 @@
             header-title="热门搜索"
             btn-text="换一批"
             @onGroupBtnClick="changeHotSearch"
+            @onTagClick="onTagClick"
             v-if="hotSearchArray && hotSearchArray.length > 0 && !showList"
         />
         <TagGroup 
@@ -21,6 +22,7 @@
             header-title="搜索历史"
             btn-text="清空"
             @onGroupBtnClick="clearHistory"
+            @onTagClick="onTagClick"
             v-if="historySearch && historySearch.length > 0 && !showList"
         />
         <SearchList
@@ -35,7 +37,7 @@ import TagGroup from '@/components/TagGroup'
 import SearchList from '@/components/SearchList'
 import {search, hotSearch} from '@/api/index'
 import {HISTORY_SEARCH_KEY, OPEN_ID_KEY} from '@/utils/const'
-import {setStorageSync, getStorageSync, showLoading, hideLoading} from '@/api/wechat'
+import {setStorageSync, getStorageSync, showLoading, hideLoading, showToast} from '@/api/wechat'
 export default {
     data() {
         return {
@@ -69,6 +71,13 @@ export default {
                 this.searchFocus = true
             }
         },
+        // 点击标签内容
+        onTagClick(keyword) {
+            this.$refs.searchBar.setValue(keyword)
+            this.setHistoryToStorage(keyword)
+            this.searchFocus = false
+            this.onSearch(keyword, true)
+        },
         //点击软键盘的确认
         onConfirm(keyword) {
             if(!keyword || keyword.trim().length === 0) {
@@ -81,19 +90,25 @@ export default {
                     return
                 }
             }
-            //存入历史，需要去重
+            this.setHistoryToStorage(keyword)
+            this.searchFocus = false
+            this.onSearch(keyword, true)
+        },
+        //存入历史，需要去重
+        setHistoryToStorage(keyword) {
             if(!this.historySearch.includes(keyword)) {
                 this.historySearch.push(keyword)
                 setStorageSync(HISTORY_SEARCH_KEY, this.historySearch)
             }
-            this.searchFocus = false
-            this.onSearch(keyword, true)
         },
         //输入内容变化
         onChange(keyword) {
             if(!keyword || keyword.trim().length === 0) {
+                this.searchList = {}
                 return
             }
+            //初始化page
+            this.page = 1
             this.onSearch(keyword)
         },
         //部分搜索可不用openId（搜索和历史记录需要）
@@ -103,7 +118,6 @@ export default {
                 params.openId = this.openId
             }
             search(params).then(res => {
-                console.log(res.data.data)
                 this.searchList = res.data.data
             })
         },
@@ -142,6 +156,29 @@ export default {
             const _hotSearch = []
             this.hotSearch.forEach(obj => _hotSearch.push(obj.title))
             return _hotSearch
+        }
+    },
+    onPageScroll() {
+        if(this.searchFocus){
+            this.searchFocus = false
+        }
+    },
+    onReachBottom() {
+        if(this.showList) {
+            this.page++
+            const searchWord = this.$refs.searchBar.getValue()
+            search({
+                keyword: searchWord,
+                page: this.page,
+                pageSize: 20
+            }).then(res => {
+                const {book} = res.data.data
+                if(book && book.length > 0) {
+                    this.searchList.book.push(...book)
+                } else {
+                    showToast('没有更多数据')
+                }
+            })
         }
     }
 }

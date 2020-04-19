@@ -1,7 +1,6 @@
 <template>
     <van-icon
-        :class="customClass"
-        :style="customStyle"
+        :custom-class="customClass"
         :name="name"
         :color="color"
         :size="size"
@@ -9,7 +8,6 @@
     />
     <icon 
         :class="customClass"
-        :style="customStyle"
         :type="name"
         :color="color"
         :size="size"
@@ -27,10 +25,6 @@ export default {
         customClass: {
             type: String,
             default: ''
-        },
-        customStyle: {
-            type: Object,
-            default: {}
         },
         name: {
             type: String,

@@ -1,3 +1,5 @@
+import {showToast} from '@/api/wechat'
+
 function createFly () {
     if(mpvuePlatform === 'wx') {
         const Fly = require('flyio/dist/npm/wx')
@@ -20,10 +22,7 @@ export function get (url, params = {}, showToast = true) {
                 } else {
                     if(showToast) {
                         let msg = response && response.data && response.data.msg || '请求失败'
-                        mpvue.showToast({
-                            title: msg,
-                            duration: 2000
-                        })
+                        showToast(msg)
                     }
                     reject(response)
                 }
@@ -45,10 +44,7 @@ export function post (url, params = {}, showToast = true) {
                 } else {
                     if(showToast) {
                         let msg = response && response.data && response.data.msg || '请求失败'
-                        mpvue.showToast({
-                            title: msg,
-                            duration: 2000
-                        })
+                        showToast(msg)
                     }
                     reject(response)
                 }

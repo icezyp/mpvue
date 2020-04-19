@@ -80,3 +80,12 @@ export function showLoading(title) {
 export function hideLoading() {
     mpvue.hideLoading()
 }
+
+//吐司
+export function showToast(msg, icon = 'none') {
+    mpvue.showToast({
+        title: msg,
+        duration: 2000,
+        icon
+    })
+}
