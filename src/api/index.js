@@ -61,3 +61,42 @@ export function hotSearch() {
     return get(`${API_URL}/book/hot-search`)
 }
 
+//获取图书详情
+export function getDetail(params) {
+    return get(`${API_URL}/book/detail`, params)
+}
+
+//获取图书目录
+export function getBookContent(params) {
+    return get(`${API_URL}/book/contents`, params)
+}
+
+//获取图书存储书架状态
+export function getShelfState(params) {
+    return get(`${API_URL}/book/shelf/get`, params)
+}
+
+//图书评分
+export function saveRate(params) {
+    return get(`${API_URL}/book/rank/save`, params)
+}
+
+//加入书架
+export function addShelf(params) {
+    return get(`${API_URL}/book/shelf/save`, params)
+}
+
+//移出书架
+export function removeShelf(params) {
+    return get(`${API_URL}/book/shelf/remove`, params)
+}
+
+//获取书架列表
+export function getShelfList(params) {
+    return get(`${API_URL}/book/shelf/get`, params)
+}
+
+//获取用户加入天数
+export function getUserDay(params) {
+    return get(`${API_URL}/user/day`, params)
+}

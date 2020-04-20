@@ -48,7 +48,7 @@ export default {
             this.$emit('showList')
         },
         onBookClick(book) {
-
+            this.$emit('onBookClick', book)
         }
     },
     computed: {

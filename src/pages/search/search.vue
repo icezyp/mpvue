@@ -28,6 +28,7 @@
         <SearchList
             :data="searchList"
             v-if="showList"
+            @onBookClick="onBookClick"
         />
     </div>
 </template>
@@ -57,12 +58,24 @@ export default {
         SearchList
     },
     methods: {
+        //清除搜索关键词
         clearKeyword() {
             this.searchList = {}
         },
+        //获取搜索热词
         getHotSearch() {
             hotSearch().then(res => {
                 this.hotSearch = res.data.data
+            })
+        },
+        //点击书籍
+        onBookClick(book) {
+            const {fileName} = book
+            this.$router.push({
+                path: '/pages/detail/main',
+                query: {
+                    fileName: fileName || ''
+                }
             })
         },
         //点击聚焦

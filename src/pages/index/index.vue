@@ -151,8 +151,14 @@ export default {
         onMoreClick() {
             console.log('more book...')
         },
-        onBookClick() {
-            console.log('book click...')
+        onBookClick(book) {
+            const {fileName} = book
+            this.$router.push({
+                path: '/pages/detail/main',
+                query: {
+                    fileName: fileName || ''
+                }
+            })
         },
         //点击换一换
         changeBooks(key) {

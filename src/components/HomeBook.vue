@@ -7,7 +7,7 @@
                     <div 
                         class="book-wrapper"
                         :style="{flexDirection: mode === HOME_BOOK_MODE.COL ? 'column' : 'row'}"
-                        @click="onBookClick"
+                        @click="onBookClick(book)"
                         v-if="mode === HOME_BOOK_MODE.COL || mode === HOME_BOOK_MODE.ROW ? true : false"
                     >
                         <div 
@@ -69,8 +69,8 @@ export default {
         onMoreClick() {
             this.$emit('onMoreClick')
         },
-        onBookClick() {
-            this.$emit('onBookClick')
+        onBookClick(book) {
+            this.$emit('onBookClick', book)
         }
     },
     components: {

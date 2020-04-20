@@ -37,7 +37,8 @@
                     <ImageView 
                         :src="reader.avatarUrl" 
                         round 
-                        mode="scaleToFill"/>
+                        mode="scaleToFill"
+                    />
                 </div>
             </div>
         </div>
