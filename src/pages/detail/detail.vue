@@ -38,7 +38,8 @@ export default {
 			contents: [],
 			openId: '',
 			fileName: '',
-			isInShelf: false
+			isInShelf: false,
+			opf: ''
         }
     },
     components: {
@@ -101,7 +102,16 @@ export default {
 			}
 		},
 		readBook(href) {
-			console.log(href)
+			if(this.fileName && this.opf){
+				this.$router.push({
+					path: '/pages/read/main',
+					query: {
+						fileName: this.fileName,
+						opf: this.opf,
+						href: href || ''
+					}
+				})
+			}
 		},
 		//获取图书详情
 		getDetail() {
@@ -110,6 +120,7 @@ export default {
 				openId: this.openId
 			}).then(res => {
 				this.book = res.data.data
+				this.opf = res.data.data.opf
 			})
 		},
 		//获取书架状态
