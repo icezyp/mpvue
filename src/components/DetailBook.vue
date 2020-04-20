@@ -42,6 +42,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+@import '@/style/mixin.scss';
 .detail-book-wrapper {
     display: flex;
     padding: 0 20px;
@@ -55,17 +56,22 @@ export default {
     }
     .book-info-r {
         flex: 1;
+        width: 197px;
         .title {
-            color: #333;
             font-size: 22px;
             line-height: 31px;
         }
         .author {
             font-size: 16px;
             line-height: 22.5px;
+        }
+        .title, .author {
             color: #333;
+            word-break: break-word;
+            @include ellipsis_2;
         }
         .category {
+            margin-top: 12px;
             font-size: 14px;
             line-height: 22px;
             color: #868686;
