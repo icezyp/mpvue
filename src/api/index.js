@@ -100,3 +100,13 @@ export function getShelfList(params) {
 export function getUserDay(params) {
     return get(`${API_URL}/user/day`, params)
 }
+
+//获取分类列表
+export function getCategoryList(){
+    return get(`${API_URL}/book/category/list/v2`)
+}
+
+//获取图书列表
+export function getBookList(params){
+    return get(`${API_URL}/book/search-list`, params)
+}

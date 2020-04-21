@@ -25,7 +25,7 @@
                         <ImageView :src="item.cover"/>
                     </div>
                 </div>
-                <div class="shelf-wrapper">
+                <div class="shelf-wrapper" @click="gotoShelf">
                     <div class="shelf">书架</div>
                     <van-icon 
                         class="arrow" 
@@ -43,6 +43,7 @@
 <script>
 import ImageView from '@/components/base/ImageView'
 import Dialog from 'vant-weapp/dist/dialog/dialog'
+import {showToast} from '@/api/wechat'
 export default {
     components: {
         ImageView
@@ -63,7 +64,7 @@ export default {
     },
     methods: {
         gotoShelf() {
-
+            this.$emit('gotoShelf')
         },
         onBookClick(book) {
             this.$emit('onBookClick', book)
@@ -78,7 +79,7 @@ export default {
                 confirmButtonText: '是',
                 cancelButtonText: '否',
             }).then(() => {
-                console.log('点击确认反馈')
+                showToast('反馈成功', 'success')
             }).catch(() => {
                 console.log('点击取消反馈')
             })

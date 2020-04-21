@@ -2,29 +2,29 @@
     <div class="search-list">
         <SearchItem 
             icon="apps-o"
-            :title="category"
+            :title="categoryText"
             sub-title="类别"
-            @click="showList(category, 'category')"
+            @selectItem="showList(category, 'category')"
             v-if="category"
         />
         <SearchItem 
             icon="user-o"
             :title="author"
             sub-title="作者"
-            @click="showList(author, 'author')"
+            @selectItem="showList(author, 'author')"
             v-if="author"
         />
         <SearchItem 
             icon="newspaper-o"
             :title="publisher"
             sub-title="出版社"
-            @click="showList(publisher, 'publisher')"
+            @selectItem="showList(publisher, 'publisher')"
             v-if="publisher"
         />
         <BookList 
-            :book-list="data.book"
+            :book-list="bookList"
             @clickBook="onBookClick"
-            v-if="data && data.book && data.book.length > 0"
+            v-if="bookList.length > 0"
         />
     </div>
 </template>
@@ -45,7 +45,7 @@ export default {
     },
     methods: {
         showList(text, key) {
-            this.$emit('showList')
+            this.$emit('showList', {text, key})
         },
         onBookClick(book) {
             this.$emit('onBookClick', book)
@@ -53,6 +53,9 @@ export default {
     },
     computed: {
         category() {
+            return this.data && this.data.category && this.data.category[0] && this.data.category[0].categoryText
+        },
+        categoryText() {
             let categoryText = this.data && this.data.category && this.data.category[0] && this.data.category[0].categoryText
             return categoryText && CATEGORY[categoryText.toLowerCase()] || ''
         },
@@ -61,6 +64,15 @@ export default {
         },
         publisher() {
             return this.data && this.data.publisher && this.data.publisher[0] && this.data.publisher[0].publisher
+        },
+        bookList() {
+            let _books = this.data && this.data.book || []
+            if(_books.length > 0) {
+                _books.forEach(item => {
+                    item.categoryText = CATEGORY[item.categoryText.toLowerCase()]
+                })
+            }
+            return _books
         }
     }
 }

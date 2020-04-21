@@ -29,6 +29,7 @@
             :data="searchList"
             v-if="showList"
             @onBookClick="onBookClick"
+            @showList="onShowList"
         />
     </div>
 </template>
@@ -67,6 +68,21 @@ export default {
             hotSearch().then(res => {
                 this.hotSearch = res.data.data
             })
+        },
+        onShowList(obj) {
+           let category = obj.key === 'category' ? obj.text : ''
+           let publisher = obj.key === 'publisher' ? obj.text : ''
+           let author = obj.key === 'author' ? obj.text : ''
+            if(category || publisher || author) {
+                this.$router.push({
+                    path: '/pages/list/main',
+                    query:{
+                        category,
+                        publisher,
+                        author
+                    }
+                })
+            }
         },
         //点击书籍
         onBookClick(book) {
@@ -178,6 +194,7 @@ export default {
     },
     onReachBottom() {
         if(this.showList) {
+            showLoading('加载更多数据')
             this.page++
             const searchWord = this.$refs.searchBar.getValue()
             search({
@@ -185,12 +202,15 @@ export default {
                 page: this.page,
                 pageSize: 20
             }).then(res => {
+                hideLoading()
                 const {book} = res.data.data
                 if(book && book.length > 0) {
                     this.searchList.book.push(...book)
                 } else {
                     showToast('没有更多数据')
                 }
+            }).catch(err => {
+                hideLoading()
             })
         }
     }

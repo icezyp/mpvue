@@ -1,5 +1,5 @@
 <template>
-    <div class="search-item" @click="selectCate">
+    <div class="search-item" @click="selectItem">
         <div class="icon-wrapper">
             <BaseIcon 
                 :name="iconName"
@@ -18,8 +18,8 @@
 import BaseIcon from './base/BaseIcon'
 export default {
     methods: {
-        selectCate() {
-            this.$emit('selectCate')
+        selectItem() {
+            this.$emit('selectItem')
         }
     },
     components: {

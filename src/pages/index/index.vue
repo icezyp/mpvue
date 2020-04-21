@@ -9,6 +9,7 @@
             <HomeCard 
                 :data="homeCard"
                 @onBookClick="onBookClick"
+                @gotoShelf="gotoShelf"
             />
             <HomeBanner
                 :img="banner.img"
@@ -61,11 +62,11 @@
                     row="3"
                     col="2"
                     mode="category"
-                    btnText="换一批"
+                    btnText="查看全部"
                     showBtn=true
                     :data="category"
-                    @onMoreClick="changeBooks('category')"
-                    @onBookClick="onBookClick"
+                    @onMoreClick="showAllCategory"
+                    @showList="showList"
                 />
             </div>
         </div>
@@ -106,6 +107,7 @@ export default {
         this.init()
     },
     methods: {
+        //获取首页数据
         getHomeData(openId, userInfo) {
             getHomeData({openId}).then(res => {
                 let {
@@ -137,12 +139,33 @@ export default {
                 hideLoading()
             })
         },
+        //点击搜索框跳转
         onSearchBarClick() {
             this.$router.push({
                 path: '/pages/search/main',
                 query: {
                     hotSearch: this.hotSearch || ''
                 }
+            })
+        },
+        //点击书架跳转
+        gotoShelf() {
+            this.$router.push('/pages/shelf/main')
+        },
+        //点击分类展示列表
+        showList(cate) {
+            this.$router.push({
+                path: '/pages/list/main',
+                query: {
+                    category: cate.categoryText,
+                    categoryId: cate.category
+                }
+            })
+        },
+        //展示所有分类
+        showAllCategory() {
+            this.$router.push({
+                path: '/pages/category/main'
             })
         },
         onBannerClick() {
@@ -176,11 +199,6 @@ export default {
                 case 'hotBook':
                     hotBook().then(res => {
                         this.hotBook = res.data.data
-                    })
-                    break;
-                case 'category':
-                    category().then(res => {
-                        this.category = res.data.data
                     })
                     break;
             }

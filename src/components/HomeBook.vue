@@ -1,6 +1,6 @@
 <template>
     <div class="home-book">
-        <div class="header">{{title}}</div>
+        <div class="header" v-if="title.length">{{title}}</div>
         <div class="content">
             <div class="row" v-for="(rowItem, rowIndex) in bookData" :key="rowIndex">
                 <div class="col" v-for="(book, bookIndex) in rowItem" :key="bookIndex">
@@ -36,6 +36,7 @@
                     <div 
                         class="category-wrapper"
                         v-else
+                        @click="showList(book)"
                     >
                         <div class="category-info">
                             <div class="category-text">{{book.text}}</div>
@@ -71,6 +72,12 @@ export default {
         },
         onBookClick(book) {
             this.$emit('onBookClick', book)
+        },
+        showAllCategory(){
+            this.$emit('showAllCategory')
+        },
+        showList(cate){
+            this.$emit('showList', cate)
         }
     },
     components: {
